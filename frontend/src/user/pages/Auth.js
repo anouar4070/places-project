@@ -58,7 +58,7 @@ const auth = useContext(AuthContext);
   const authSubmitHandler = event => {
     event.preventDefault();
     console.log(formState.inputs);
-    auth.login(); //update the context & the data managed there & therefore the user interface
+    auth.login(); //🚀 update the context & the data managed there & therefore the user interface🛠️
   };
 
   return (

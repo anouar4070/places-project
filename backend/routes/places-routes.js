@@ -1,4 +1,5 @@
 const express = require("express");
+const HttpError = require("../models/http-error");
 
 const router = express.Router();
 
@@ -23,9 +24,7 @@ router.get("/:pid", (req, res, next) => {
   });
 
   if (!place) {
-    const error = new Error('Could not find a place for the provided id.');
-    error.code = 404;
-    throw error; // this one trigger the error handling middleware
+    throw new HttpError("Could not find a place for the provided id.", 404);
   }
 
   res.json({ place }); // { place: place }
@@ -38,15 +37,41 @@ router.get("/user/:uid", (req, res, next) => {
   });
 
   if (!place) {
-    // return res
-    //   .status(404)
-    //   .json({ message: "Could not find a place for the provided user id." });
-    const error = new Error('Could not find a place for the provided user id.');
-    error.code = 404;
-    return next(error);
+    return next(
+      new HttpError("Could not find a place for the provided user id.", 404)
+    );
   }
 
   res.json({ place }); // { place: place }
 });
 
 module.exports = router;
+
+/**
+ next(error) is the recommended way to handle errors in Express.
+✅ It's clean, Express-standard, and works well with asynchronous code.
+❗ But it's specific to Express — not a general JavaScript pattern.
+
+throw error is natural in plain JavaScript.
+✅ Simple and intuitive.
+❗ But not ideal in Express routes — it can crash the app or bypass Express error handling unless used with try/catch and next().
+ */
+
+/**
+ //                 *** Without using Error Model ***
+//0-
+     const error = new Error('Could not find a place for the provided id.');
+     error.code = 404;
+     throw error; // this one trigger the error handling middleware
+//1-
+     const error = new Error('Could not find a place for the provided user id.');
+     error.code = 404;
+     return next(error);
+
+//     *** Using neither an Error model nor an error middleware in "app.js" ***
+//2- 
+      return res
+      .status(404)
+       .json({ message: "Could not find a place for the provided user id." });
+
+ */

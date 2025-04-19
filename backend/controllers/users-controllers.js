@@ -13,8 +13,20 @@ const DUMMY_USERS = [
   },
 ];
 
-const getUsers = (req, res, next) => {
-  res.json({ users: DUMMY_USERS });
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, "-password");
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
+
+  //res.json({ users: DUMMY_USERS });
 };
 
 const signup = async (req, res, next) => {
@@ -55,7 +67,7 @@ const signup = async (req, res, next) => {
     email,
     image: "https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg",
     password,
-    places
+    places,
   });
 
   try {
@@ -91,7 +103,7 @@ const signup = async (req, res, next) => {
 //   res.json({ message: "Logged in!" });
 // };
 
-const login = async(req, res, next) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   let existingUser;
@@ -105,7 +117,7 @@ const login = async(req, res, next) => {
     return next(error);
   }
 
-  if(!existingUser || existingUser.password !== password){
+  if (!existingUser || existingUser.password !== password) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
       401

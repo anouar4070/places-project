@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -11,6 +11,20 @@ const HttpError = require("./models/http-error");
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  //Allows all domains (*) to access the server's resources.
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  //Specifies the headers allowed in incoming requests.
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  //Indicates which HTTP methods are permitted for cross-origin requests.
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+
+  next();
+});
 
 app.use("/api/places", placesRoutes);
 app.use("/api/users", usersRoutes);
@@ -38,3 +52,18 @@ mongoose
     app.listen(5000);
   })
   .catch((err) => console.log(err));
+
+/**
+                          *** using CORS ***
+1/ npm install cors
+
+2/
+       const cors = require('cors');
+
+        app.use(cors({
+         origin: '*', // or specify origin like 'http://localhost:3000'
+         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+         allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+        }));
+
+   */

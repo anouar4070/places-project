@@ -76,7 +76,7 @@ const getPlacesByUserId = async (req, res, next) => {
     places: userWithPlaces.places.map((place) =>
       place.toObject({ getters: true })
     ),
-  }); // { places: places }
+  });
 };
 
 const createPlace = async (req, res, next) => {

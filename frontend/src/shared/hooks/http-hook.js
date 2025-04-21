@@ -24,14 +24,21 @@ export const useHttpClient = () => {
         });
 
         const responseData = await response.json();
+     //keep every controller except for the controller which was used in this request
+        activeHttpRequests.current = activeHttpRequests.current.filter(
+          (reqCtrl) => reqCtrl !== httpAbortCtrl
+        );
+
         if (!response.ok) {
           throw new Error(responseData.message);
         }
+        setIsLoading(false);
         return responseData;
       } catch (err) {
         setError(err.message);
+        setIsLoading(false);
+        throw err; //the component that uses this hook has a chance to know that something went wrong
       }
-      setIsLoading(false);
     },
     [] // useCallback ensures the function is stable and doesn't get recreated on each render
   );

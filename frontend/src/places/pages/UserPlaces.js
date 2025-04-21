@@ -40,6 +40,7 @@ const UserPlaces = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const userId = useParams().userId;
 
+  //const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId);
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
@@ -52,7 +53,6 @@ const UserPlaces = () => {
     fetchPlaces();
   }, [sendRequest, userId]);
 
-  //const loadedPlaces = DUMMY_PLACES.filter(place => place.creator === userId);
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />

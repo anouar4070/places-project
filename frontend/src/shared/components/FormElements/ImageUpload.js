@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from 'react';
 
-import Button from "./Button";
-import "./ImageUpload.css";
+import Button from './Button';
+import './ImageUpload.css';
 
-const ImageUpload = (props) => {
+const ImageUpload = props => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [isValid, setIsValid] = useState(false);
@@ -15,20 +15,17 @@ const ImageUpload = (props) => {
       return;
     }
     const fileReader = new FileReader();
-    // When the file is finished reading, set the preview URL
-    // fileReader.result will contain a base64-encoded string of the image
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
     };
-    // Start reading the file as a Data URL (base64 string)
     fileReader.readAsDataURL(file);
   }, [file]);
 
-  const pickedHandler = (event) => {
+  const pickedHandler = event => {
     let pickedFile;
     let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
-      const pickedFile = event.target.files[0];
+      pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
       fileIsValid = true;
@@ -40,8 +37,6 @@ const ImageUpload = (props) => {
   };
 
   const pickImageHandler = () => {
-    // Programmatically triggers a click on the hidden file input to open the file picker dialog
-    // click() is a native method available on HTML elements in the DOM.
     filePickerRef.current.click();
   };
 
@@ -50,12 +45,12 @@ const ImageUpload = (props) => {
       <input
         id={props.id}
         ref={filePickerRef}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         type="file"
         accept=".jpg,.png,.jpeg"
         onChange={pickedHandler}
       />
-      <div className={`image-upload ${props.center && "center"}`}>
+      <div className={`image-upload ${props.center && 'center'}`}>
         <div className="image-upload__preview">
           {previewUrl && <img src={previewUrl} alt="Preview" />}
           {!previewUrl && <p>Please pick an image.</p>}

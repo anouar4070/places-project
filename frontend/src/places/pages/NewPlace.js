@@ -36,6 +36,8 @@ const NewPlace = () => {
   );
 
   const history = useHistory();
+    //🛠️ on React(v6+) you better use:
+  //const navigate = useNavigate();
 
   const placeSubmitHandler = async event => {
     event.preventDefault();
@@ -52,6 +54,8 @@ const NewPlace = () => {
         { 'Content-Type': 'application/json' }
       );
       history.push('/');
+       //🛠️ on React(v6+) you better use:
+      //navigate("/");
     } catch (err) {}
   };
 

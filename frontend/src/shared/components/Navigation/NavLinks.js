@@ -10,6 +10,7 @@ const NavLinks = props => {
   return (
     <ul className="nav-links">
       <li>
+        {/* "exact" tells the Nav link that this link is marked active and active css are applied only when the exact route "/" matches   */}
         <NavLink to="/" exact>
           ALL USERS
         </NavLink>

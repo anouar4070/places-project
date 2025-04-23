@@ -33,6 +33,7 @@ const App = () => {
   if (isLoggedIn) {
     routes = (
       <Switch>
+        {/* Ensures that only the first matching route is rendered */}
         <Route path="/" exact>
           <Users />
         </Route>
@@ -65,6 +66,7 @@ const App = () => {
     );
   }
 
+
   return (
     <AuthContext.Provider
       value={{
@@ -83,3 +85,15 @@ const App = () => {
 };
 
 export default App;
+
+/**
+ * 1/    *** to replace  <Redirect to="/" /> in in React Router v6  ***
+
+  import { Navigate } from 'react-router-dom';
+  // Redirects to the home page ("/") in React Router v6
+  <Navigate to="/" replace />
+
+   2/    *** <Switch> is deprecated in React Router v6. ***
+
+    Use <Routes> instead
+ */

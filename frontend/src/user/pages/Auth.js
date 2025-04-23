@@ -80,7 +80,7 @@ const Auth = () => {
             'Content-Type': 'application/json'
           }
         );
-        auth.login(responseData.user.id);
+        auth.login(responseData.user.id); //🚀 update the context & the data managed there & therefore the user interface🛠️
       } catch (err) {}
     } else {
       try {
@@ -92,10 +92,10 @@ const Auth = () => {
         const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
-          formData
+          formData //formData adds automatically the right header
         );
 
-        auth.login(responseData.user.id);
+        auth.login(responseData.user.id); //🚀 update the context & the data managed there & therefore the user interface🛠️
       } catch (err) {}
     }
   };
@@ -153,3 +153,13 @@ const Auth = () => {
 };
 
 export default Auth;
+
+/**                        *** formData adds automatically the right header ***
+ JSON.stringify({
+    name: formState.inputs.name.value,
+    email: formState.inputs.email.value,
+                }),
+ {
+   "Content-Type": "application/json",
+ }
+          */

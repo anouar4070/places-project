@@ -35,7 +35,7 @@ const UpdatePlace = () => {
     },
     false
   );
-
+  //const identifiedPlace = DUMMY_PLACES.find((p) => p.id === placeId);
   useEffect(() => {
     const fetchPlace = async () => {
       try {
@@ -61,6 +61,30 @@ const UpdatePlace = () => {
     };
     fetchPlace();
   }, [sendRequest, placeId, setFormData]);
+
+ // useEffect(() => {
+  //   if (identifiedPlace) {
+  //     setFormData(
+  //       {
+  //         title: {
+  //           value: identifiedPlace.title,
+  //           isValid: true,
+  //         },
+  //         description: {
+  //           value: identifiedPlace.description,
+  //           isValid: true,
+  //         },
+  //       },
+  //       true
+  //     );
+  //   }
+  //   setIsLoading(false);
+  // }, [setFormData, identifiedPlace]);
+
+  /**
+   * I don't share "placeUpdateSubmitHandler" with useForm because the submission logic
+   * is specific to the component in which we do have the form.
+   */
 
   const placeUpdateSubmitHandler = async event => {
     event.preventDefault();

@@ -15,9 +15,12 @@ const ImageUpload = (props) => {
       return;
     }
     const fileReader = new FileReader();
+    // When the file is finished reading, set the preview URL
+    // fileReader.result will contain a base64-encoded string of the image
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
-    }
+    };
+    // Start reading the file as a Data URL (base64 string)
     fileReader.readAsDataURL(file);
   }, [file]);
 
@@ -54,8 +57,8 @@ const ImageUpload = (props) => {
       />
       <div className={`image-upload ${props.center && "center"}`}>
         <div className="image-upload__preview">
-         {previewUrl && <img src={previewUrl} alt="Preview" />}
-         {!previewUrl && <p>Please pick an image.</p>}
+          {previewUrl && <img src={previewUrl} alt="Preview" />}
+          {!previewUrl && <p>Please pick an image.</p>}
         </div>
         <Button type="button" onClick={pickImageHandler}>
           PICK IMAGE

@@ -1,19 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from 'react';
 
-import Card from "../../shared/components/UIElements/Card";
-import Button from "../../shared/components/FormElements/Button";
-import Modal from "../../shared/components/UIElements/Modal";
-import Map from "../../shared/components/UIElements/Map";
-import { AuthContext } from "../../shared/context/auth-context";
-import "./PlaceItem.css";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import ErrorModal from "../../shared/components/UIElements/ErrorModal";
-import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
+import Card from '../../shared/components/UIElements/Card';
+import Button from '../../shared/components/FormElements/Button';
+import Modal from '../../shared/components/UIElements/Modal';
+import Map from '../../shared/components/UIElements/Map';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { AuthContext } from '../../shared/context/auth-context';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import './PlaceItem.css';
 
-const PlaceItem = (props) => {
+const PlaceItem = props => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext);
-
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -21,15 +20,20 @@ const PlaceItem = (props) => {
 
   const closeMapHandler = () => setShowMap(false);
 
-  const showDeleteWarningHandler = () => setShowConfirmModal(true);
-  const cancelDeleteHandler = () => setShowConfirmModal(false);
+  const showDeleteWarningHandler = () => {
+    setShowConfirmModal(true);
+  };
+
+  const cancelDeleteHandler = () => {
+    setShowConfirmModal(false);
+  };
 
   const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
     try {
       await sendRequest(
         `http://localhost:5000/api/places/${props.id}`,
-        "DELETE"
+        'DELETE'
       );
       props.onDelete(props.id);
     } catch (err) {}
@@ -50,7 +54,6 @@ const PlaceItem = (props) => {
           <Map center={props.coordinates} zoom={16} />
         </div>
       </Modal>
-
       <Modal
         show={showConfirmModal}
         onCancel={cancelDeleteHandler}
@@ -68,8 +71,8 @@ const PlaceItem = (props) => {
         }
       >
         <p>
-          Do you want to delete this place? Please note that it can't be undone
-          thereafter.{" "}
+          Do you want to proceed and delete this place? Please note that it
+          can't be undone thereafter.
         </p>
       </Modal>
       <li className="place-item">
@@ -90,6 +93,7 @@ const PlaceItem = (props) => {
             {auth.userId === props.creatorId && (
               <Button to={`/places/${props.id}`}>EDIT</Button>
             )}
+
             {auth.userId === props.creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>
                 DELETE

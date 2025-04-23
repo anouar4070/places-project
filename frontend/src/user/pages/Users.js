@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import UsersList from "../components/UsersList";
-import ErrorModal from "../../shared/components/UIElements/ErrorModal";
-import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
-import { useHttpClient } from "../../shared/hooks/http-hook";
+import UsersList from '../components/UsersList';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 const Users = () => {
-  // const USERS = [
+   // const USERS = [
   //   {
   //     id: 'u1',
   //     name: 'Anouar Garbaa',
@@ -21,7 +21,9 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const responseData = await sendRequest("http://localhost:5000/api/users");
+        const responseData = await sendRequest(
+          'http://localhost:5000/api/users'
+        );
 
         setLoadedUsers(responseData.users);
       } catch (err) {}

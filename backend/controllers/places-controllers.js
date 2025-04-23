@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require("uuid");
+const uuid = require("uuid/v4");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 
@@ -23,6 +23,7 @@ const User = require("../models/user");
 
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid; // { pid: 'p1' }
+
   let place;
   try {
     place = await Place.findById(placeId);
@@ -36,7 +37,7 @@ const getPlaceById = async (req, res, next) => {
 
   if (!place) {
     const error = new HttpError(
-      "Could not find a place for the provided id.",
+      "Could not find place for the provided id.",
       404
     );
     return next(error);
@@ -47,28 +48,29 @@ const getPlaceById = async (req, res, next) => {
 };
 
 const getPlacesByUserId = async (req, res, next) => {
-  const userId = req.params.uid; // { pid: 'p1' }
+  const userId = req.params.uid;
 
   // const places = DUMMY_PLACES.filter((p) => {
   //   return p.creator === userId;
   // });
 
   //let places;
+
   let userWithPlaces;
   try {
     userWithPlaces = await User.findById(userId).populate("places");
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not find a place.",
+      "Fetching places failed, please try again later.",
       500
     );
     return next(error);
   }
 
-  //if (!places || places.length === 0) {
+  // if (!places || places.length === 0) {
   if (!userWithPlaces || userWithPlaces.places.length === 0) {
     return next(
-      new HttpError("Could not find  places for the provided user id.", 404)
+      new HttpError("Could not find places for the provided user id.", 404)
     );
   }
 
@@ -107,7 +109,7 @@ const createPlace = async (req, res, next) => {
     address,
     location: coordinates,
     image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg", // => File Upload module, will be replaced with real image url
     creator,
   });
 
@@ -135,7 +137,6 @@ const createPlace = async (req, res, next) => {
     // Start a new session for transaction
     const sess = await mongoose.startSession();
     sess.startTransaction();
-
     // Save the new place within the session
     await createdPlace.save({ session: sess });
     // Link the place to the user
@@ -165,7 +166,7 @@ const updatePlace = async (req, res, next) => {
   }
 
   const { title, description } = req.body;
-  const placeId = req.params.pid; // { pid: 'p1' }
+  const placeId = req.params.pid;
 
   let place;
   try {
@@ -182,11 +183,12 @@ const updatePlace = async (req, res, next) => {
   // const placeIndex = DUMMY_PLACES.findIndex((p) => p.id === placeId);
   place.title = title;
   place.description = description;
+
   try {
-    place = await place.save();
+    await place.save();
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not save updated place.",
+      "Something went wrong, could not update place.",
       500
     );
     return next(error);
@@ -231,7 +233,7 @@ const deletePlace = async (req, res, next) => {
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    await place.deleteOne({ session: sess });
+    await place.remove({ session: sess });
     place.creator.places.pull(place);
     await place.creator.save({ session: sess });
     await sess.commitTransaction();
@@ -245,7 +247,7 @@ const deletePlace = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: "Deleted Place." });
+  res.status(200).json({ message: "Deleted place." });
 };
 
 exports.getPlaceById = getPlaceById;

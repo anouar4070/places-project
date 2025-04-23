@@ -29,7 +29,6 @@ app.use((req, res, next) => {
 app.use("/api/places", placesRoutes);
 app.use("/api/users", usersRoutes);
 
-//Handling Errors for Unsupported Routes
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
   throw error;
@@ -51,7 +50,9 @@ mongoose
     console.log("Connected to database!");
     app.listen(5000);
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.log(err);
+  });
 
 /**
                           *** using CORS ***

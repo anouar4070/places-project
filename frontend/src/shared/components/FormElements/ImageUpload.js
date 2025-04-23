@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import Button from "./Button";
 import "./ImageUpload.css";
@@ -28,7 +28,7 @@ const ImageUpload = (props) => {
     let pickedFile;
     let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
-      const pickedFile = event.target.files[0];
+      pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
       fileIsValid = true;

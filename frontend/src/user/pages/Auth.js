@@ -80,7 +80,7 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        auth.login(responseData.user.id); //🚀 update the context & the data managed there & therefore the user interface🛠️
+        auth.login(responseData.userId, responseData.token); //🚀 update the context & the data managed there & therefore the user interface🛠️
       } catch (err) {}
     } else {
       try {
@@ -95,7 +95,7 @@ const Auth = () => {
           formData //formData adds automatically the right header
         );
 
-        auth.login(responseData.user.id); //🚀 update the context & the data managed there & therefore the user interface🛠️
+        auth.login(responseData.userId, responseData.token); //🚀 update the context & the data managed there & therefore the user interface🛠️
       } catch (err) {}
     }
   };

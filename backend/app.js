@@ -55,7 +55,9 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ooicrpn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`
+  )
   .then(() => {
     console.log("Connected to database!");
     app.listen(5000);
